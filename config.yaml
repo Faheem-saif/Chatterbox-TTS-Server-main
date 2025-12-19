@@ -8,61 +8,51 @@ server:
   log_file_path: logs/tts_server.log
   log_file_max_size_mb: 10
   log_file_backup_count: 5
+
 model:
-  repo_id: chatterbox-turbo
+  repo_id: chatterbox-multilingual   # ← CHANGED: This loads the true multilingual model
+
 tts_engine:
-  device: cuda
+  device: cuda                       # Keep cuda if available (Colab T4 supports it)
   predefined_voices_path: voices
   reference_audio_path: reference_audio
-  default_voice_id: Emily.wav
+  default_voice_id: Emily.wav        # You can keep or change to a Spanish voice
+
 paths:
   model_cache: model_cache
   output: outputs
+
 generation_defaults:
   temperature: 0.8
-  exaggeration: 1.3
+  exaggeration: 0.7                  # Slightly lower than Turbo for more natural multilingual output
   cfg_weight: 0.5
-  seed: 0
+  seed: 42                           # Fixed seed = consistent voice across long generations
   speed_factor: 1.0
-  language: en
+  language: es                       # ← CHANGED: Default to Spanish (es). Change to fr, de, hi, etc. as needed
+
 audio_output:
-  format: wav
+  format: mp3                        # ← CHANGED: MP3 is better for long audiobooks (smaller files)
   sample_rate: 24000
   max_reference_duration_sec: 30
   save_to_disk: false
-ui_state:
-  last_text: '[gasp] Okay, we have fifteen minutes left! Fifteen minutes! [groan]
-    How have we been in here for forty-five minutes and only solved two puzzles?!
-    [clear throat] Let''s think logically. [sniff] This room smells like fear and
-    bad decisions. [cough] And also someone''s very strong cologne, Kevin. [sigh]
-    Okay, the clue says "the answer lies where time stands still." [chuckle] Great,
-    very helpful, very straightforward. [shush] Everyone stop talking for one second!
-    [gasp] Wait, the clock on the wall! It''s stuck at three fifteen! [laugh] That''s
-    it! That has to be it! [groan] It''s not the combination. Of course it''s not
-    the combination. [sniff] Why would anything in this room be logical? [sigh] Has
-    anyone checked under the carpet? [gasp] There''s a hidden compartment! [chuckle]
-    Kevin, you''re standing on a clue! Classic Kevin! [clear throat] Okay, it''s another
-    riddle. "What has keys but no locks, space but no room, and you can enter but
-    can''t go inside?" [groan] Who writes these things?! [cough] A keyboard! It''s
-    a keyboard! [laugh] There''s a keyboard painted on the wall! [gasp] Eight minutes!
-    We have eight minutes! [sigh] If we don''t escape this room, we''re never speaking
-    of this again. [shush] Focus, everyone! [chuckle] We''re so close I can taste
-    freedom! [sniff] That or more of Kevin''s cologne!
 
-    '
-  last_voice_mode: predefined
+ui_state:
+  last_text: "Hola, ¿cómo estás? Esto es una prueba en español con una voz clonada. La gente no se enamora de quién sos, sino de cómo los hacés sentir cuando están con vos. Este modelo ahora soporta 23 idiomas de forma nativa y suena completamente natural en español."
+  last_voice_mode: clone             # Use your uploaded Spanish reference audio
   last_predefined_voice: Emily.wav
-  last_reference_file: Gianna.wav
-  last_seed: 3000
-  last_chunk_size: 240
+  last_reference_file: 15_Indirectas_que_los_HOMBRES_hacen_Si_LES_GUSTAS_y_no_te_das_cuenta_mp3cut.net__1_.mp3
+  last_seed: 42
+  last_chunk_size: 300               # Good for long Spanish scripts
   last_split_text_enabled: true
   hide_chunk_warning: false
   hide_generation_warning: false
   theme: light
-  last_preset_name: "\u26A1 Turbo: Escape Room Panic"
+  last_preset_name: "🇪🇸 Español - Voz Clonada Natural"
+
 ui:
-  title: Chatterbox TTS Server
-  show_language_select: true
+  title: Chatterbox Multilingual TTS Server
+  show_language_select: true         # Already true — keeps language dropdown visible
   max_predefined_voices_in_dropdown: 50
+
 debug:
   save_intermediate_audio: false
